@@ -10,7 +10,7 @@ public static class MauiProgram
         .UseMauiCommunityToolkit()
         .UseShinyFramework(
             new DryIocContainerExtension(),
-            prism => prism.OnAppStart("NavigationPage/MainPage"),
+            prism => prism.OnAppStart("NavigationPage/BleScan"),
             new (
 #if DEBUG
                 ErrorAlertType.FullError
@@ -32,7 +32,7 @@ public static class MauiProgram
 
     static MauiAppBuilder RegisterAppServices(this MauiAppBuilder builder) 
     {
-        // register your own services here!
+        builder.Services.AddBluetoothLE();
         return builder;
     }
 
@@ -56,6 +56,7 @@ public static class MauiProgram
 
 
         s.RegisterForNavigation<MainPage, MainViewModel>();
+        s.RegisterForNavigation<ScanPage, ScanViewModel>("BleScan");
         return builder;
     }
 }
