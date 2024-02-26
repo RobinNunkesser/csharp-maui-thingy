@@ -57,6 +57,8 @@ public static class MauiProgram
 
         s.RegisterForNavigation<MainPage, MainViewModel>();
         s.RegisterForNavigation<ScanPage, ScanViewModel>("BleScan");
+        s.RegisterForNavigation<PeripheralPage, PeripheralViewModel>("BlePeripheral");
         return builder;
     }
 }
+
