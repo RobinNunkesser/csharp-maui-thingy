@@ -81,4 +81,38 @@
 		<PackageReference Include="Shiny.Hosting.Maui" Version="3.2.4" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <MauiXaml Update="BleClient\PeripheralPage.xaml">
+	    <SubType>Designer</SubType>
+	  </MauiXaml>
+	  <MauiXaml Update="BleClient\ScanPage.xaml">
+	    <SubType>Designer</SubType>
+	  </MauiXaml>
+	  <MauiXaml Update="BleClient\ServicePage.xaml">
+	    <SubType>Designer</SubType>
+	  </MauiXaml>
+	  <MauiXaml Update="BleClient\CharacteristicPage.xaml">
+	    <SubType>Designer</SubType>
+	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="BleClient\PeripheralPage.xaml.cs">
+	    <DependentUpon>PeripheralPage.xaml</DependentUpon>
+	    <SubType>Code</SubType>
+	  </Compile>
+	  <Compile Update="BleClient\ScanPage.xaml.cs">
+	    <DependentUpon>ScanPage.xaml</DependentUpon>
+	    <SubType>Code</SubType>
+	  </Compile>
+	  <Compile Update="BleClient\ServicePage.xaml.cs">
+	    <DependentUpon>ServicePage.xaml</DependentUpon>
+	    <SubType>Code</SubType>
+	  </Compile>
+	  <Compile Update="BleClient\CharacteristicPage.xaml.cs">
+	    <DependentUpon>CharacteristicPage.xaml</DependentUpon>
+	    <SubType>Code</SubType>
+	  </Compile>
+	</ItemGroup>
+
 </Project>
