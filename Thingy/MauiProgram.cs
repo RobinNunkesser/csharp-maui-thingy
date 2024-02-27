@@ -10,7 +10,7 @@ public static class MauiProgram
         .UseMauiCommunityToolkit()
         .UseShinyFramework(
             new DryIocContainerExtension(),
-            prism => prism.OnAppStart("NavigationPage/BleScan"),
+            prism => prism.OnAppStart("NavigationPage/MainPage"),
             new (
 #if DEBUG
                 ErrorAlertType.FullError
