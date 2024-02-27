@@ -9,8 +9,9 @@
         <ContentPage Title="Menu">
             <TableView Intent="Menu">
                 <TableRoot>
-                    <TableSection Title="Shiny.BluetoothLE (Client)">
+                    <TableSection Title="BluetoothLE (Client)">
                         <TextCell Text="Scan" Command="{Binding Navigate}" CommandParameter="BleScan" />
+                        <TextCell Text="Sensors" Command="{Binding Navigate}" CommandParameter="Sensors" />
                     </TableSection>
                 </TableRoot>
             </TableView>

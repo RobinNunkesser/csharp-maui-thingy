@@ -1,4 +1,6 @@
 ﻿
+using Thingy.Sensors;
+
 namespace Thingy;
 
 
@@ -60,6 +62,7 @@ public static class MauiProgram
         s.RegisterForNavigation<PeripheralPage, PeripheralViewModel>("BlePeripheral");
         s.RegisterForNavigation<ServicePage, ServiceViewModel>("BlePeripheralService");
         s.RegisterForNavigation<CharacteristicPage, CharacteristicViewModel>("BlePeripheralCharacteristic");
+        s.RegisterForNavigation<SensorsPage, SensorsViewModel>("Sensors");
         return builder;
     }
 }
