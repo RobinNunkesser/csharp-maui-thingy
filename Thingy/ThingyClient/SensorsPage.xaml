@@ -6,6 +6,6 @@
              x:DataType="local:SensorsViewModel"
              x:Class="Thingy.SensorsPage">
     <ContentPage.Content>
-        <ActivityIndicator IsRunning="{Binding IsScanning}" />
+        
     </ContentPage.Content>
 </ContentPage>

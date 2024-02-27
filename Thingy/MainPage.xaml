@@ -11,7 +11,7 @@
                 <TableRoot>
                     <TableSection Title="BluetoothLE (Client)">
                         <TextCell Text="Scan" Command="{Binding Navigate}" CommandParameter="BleScan" />
-                        <TextCell Text="Sensors" Command="{Binding Navigate}" CommandParameter="Sensors" />
+                        <TextCell Text="Sensors" Command="{Binding Navigate}" CommandParameter="Connection" />
                     </TableSection>
                 </TableRoot>
             </TableView>

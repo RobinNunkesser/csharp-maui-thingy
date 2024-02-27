@@ -14,3 +14,4 @@ public static class ThingyUUIDs
             { "FE59", "Secure DFU Service" },
         };
 }
+

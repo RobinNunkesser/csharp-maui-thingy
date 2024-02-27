@@ -2,11 +2,11 @@ using Shiny.BluetoothLE;
 
 namespace Thingy;
 
-public class SensorsViewModel : ViewModel
+public class ConnectionViewModel : ViewModel
 {
     IDisposable? _scanSub;
     
-    public SensorsViewModel(BaseServices services, IBleManager bleManager) : base(
+    public ConnectionViewModel(BaseServices services, IBleManager bleManager) : base(
         services)
     {
         Scan(bleManager); 
@@ -35,7 +35,7 @@ public class SensorsViewModel : ViewModel
                     {
                         if (result.Peripheral.Name is not "Thingy") continue;
                         this.StopScan();
-                        await this.Navigation.Navigate("BlePeripheral", ("Peripheral", result.Peripheral));
+                        await this.Navigation.Navigate("Sensors", ("Peripheral", result.Peripheral));
                     }
                 }
 

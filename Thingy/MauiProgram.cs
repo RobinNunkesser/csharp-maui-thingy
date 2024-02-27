@@ -10,7 +10,7 @@ public static class MauiProgram
         .UseMauiCommunityToolkit()
         .UseShinyFramework(
             new DryIocContainerExtension(),
-            prism => prism.OnAppStart("NavigationPage/MainPage"),
+            prism => prism.OnAppStart("NavigationPage/Connection"),
             new (
 #if DEBUG
                 ErrorAlertType.FullError
@@ -60,6 +60,7 @@ public static class MauiProgram
         s.RegisterForNavigation<PeripheralPage, PeripheralViewModel>("BlePeripheral");
         s.RegisterForNavigation<ServicePage, ServiceViewModel>("BlePeripheralService");
         s.RegisterForNavigation<CharacteristicPage, CharacteristicViewModel>("BlePeripheralCharacteristic");
+        s.RegisterForNavigation<ConnectionPage, ConnectionViewModel>("Connection");
         s.RegisterForNavigation<SensorsPage, SensorsViewModel>("Sensors");
         return builder;
     }
