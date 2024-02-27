@@ -1,6 +1,4 @@
 ﻿
-using Thingy.Sensors;
-
 namespace Thingy;
 
 

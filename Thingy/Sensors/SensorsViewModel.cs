@@ -1,6 +1,6 @@
 using Shiny.BluetoothLE;
 
-namespace Thingy.Sensors;
+namespace Thingy;
 
 public class SensorsViewModel : ViewModel
 {
