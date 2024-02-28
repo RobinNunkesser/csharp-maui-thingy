@@ -8,7 +8,7 @@ public class UuidConverter : IValueConverter
         CultureInfo culture)
     {
         var uuid = (value as string)?.ToUpper();
-        ThingyUUIDs.Uuid.TryGetValue(uuid, out var service);
+        ThingyUUIDs.Description.TryGetValue(uuid, out var service);
         return service ?? value;
     }
 

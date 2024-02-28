@@ -1,38 +1,96 @@
+/// https://nordicsemiconductor.github.io/Nordic-Thingy52-FW/documentation/firmware_architecture.html#fw_arch_ble_services
+
 using Shiny.BluetoothLE;
 
 namespace Thingy;
 
 public class SensorsViewModel : ViewModel
 {
-    IPeripheral peripheral = null!;
-    
+    private IPeripheral peripheral = null!;
+
     public SensorsViewModel(BaseServices services) : base(services)
     {
-        this.Load = ReactiveCommand.CreateFromTask(async () =>
+        Load = ReactiveCommand.CreateFromTask(async () =>
         {
-            var services = await this.peripheral
+            var services = await peripheral
                 .WithConnectIf()
                 .Select(x => x.GetServices())
                 .Switch()
                 .ToTask();
             foreach (var service in services)
-            {
-                switch (service.Uuid)
+                switch (service.Uuid.ToUpper())
                 {
-                    
+                    case ThingyUUIDs.ThingyConfigurationUuid: break;
+                    case ThingyUUIDs.WeatherStationUuid:
+                        WeatherStationService();
+                        break;
+                    case ThingyUUIDs.SecureDFUuuid: break;
+                    case ThingyUUIDs.ThingyMotionUuid: break;
+                    case ThingyUUIDs.BatteryUuid:
+                        BatteryService();
+                        break;
+                    case ThingyUUIDs.UIuuid: break;
+                    case ThingyUUIDs.ThingySoundUuid: break;
                 }
-            }
         });
     }
-    
+
+    [Reactive] public byte BatteryLevel { get; private set; }
+
     public ICommand Load { get; }
-    
+
+    private async Task<List<BleCharacteristicInfo>> GetCharacteristics(
+        string uuid)
+    {
+        return (await peripheral!.GetCharacteristicsAsync(uuid)).ToList();
+    }
+
+    private async Task<List<BleDescriptorInfo>> GetDescriptors(
+        BleCharacteristicInfo characteristicInfo)
+    {
+        return (await peripheral!.GetDescriptorsAsync(characteristicInfo))
+            .ToList();
+    }
+
+    private async void WeatherStationService()
+    {
+        var characteristics =
+            await GetCharacteristics(ThingyUUIDs.WeatherStationUuid);
+        foreach (var characteristic in characteristics)
+        {
+            var descriptors = await GetDescriptors(characteristic);
+            foreach (var descriptor in descriptors) Console.Write(descriptor);
+        }
+    }
+
+    private async void BatteryService()
+    {
+        var characteristics =
+            await GetCharacteristics(ThingyUUIDs.BatteryUuid);
+        foreach (var characteristic in characteristics)
+        {
+            if (characteristic.CanRead())
+            {
+                var result =
+                    await peripheral!.ReadCharacteristicAsync(characteristic);
+                if (result.Data != null) BatteryLevel = result.Data[0];
+            }
+
+            if (characteristic.CanNotify())
+                peripheral
+                    .NotifyCharacteristic(characteristic)
+                    .SubOnMainThread(result =>
+                    {
+                        if (result.Data != null) BatteryLevel = result.Data[0];
+                    });
+        }
+    }
+
     public override void OnNavigatedTo(INavigationParameters parameters)
     {
-        this.peripheral = parameters.GetValue<IPeripheral>("Peripheral")!;
-        this.Title = this.peripheral.Name ?? "No Name";
+        peripheral = parameters.GetValue<IPeripheral>("Peripheral")!;
+        Title = peripheral.Name ?? "No Name";
 
-        this.Load.Execute(null);
+        Load.Execute(null);
     }
 }
-

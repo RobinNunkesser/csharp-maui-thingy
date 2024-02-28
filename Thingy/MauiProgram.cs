@@ -1,6 +1,4 @@
-﻿
-namespace Thingy;
-
+﻿namespace Thingy;
 
 public static class MauiProgram
 {
@@ -11,7 +9,8 @@ public static class MauiProgram
         .UseShinyFramework(
             new DryIocContainerExtension(),
             prism => prism.OnAppStart("NavigationPage/Connection"),
-            new (
+            //prism => prism.OnAppStart("NavigationPage/BleScan"),
+            new GlobalExceptionHandlerConfig(
 #if DEBUG
                 ErrorAlertType.FullError
 #else
@@ -30,14 +29,16 @@ public static class MauiProgram
         .Build();
 
 
-    static MauiAppBuilder RegisterAppServices(this MauiAppBuilder builder) 
+    private static MauiAppBuilder RegisterAppServices(
+        this MauiAppBuilder builder)
     {
         builder.Services.AddBluetoothLE();
         return builder;
     }
 
 
-    static MauiAppBuilder RegisterInfrastructure(this MauiAppBuilder builder)
+    private static MauiAppBuilder RegisterInfrastructure(
+        this MauiAppBuilder builder)
     {
         builder.Configuration.AddJsonPlatformBundle();
 #if DEBUG
@@ -50,19 +51,22 @@ public static class MauiProgram
     }
 
 
-    static MauiAppBuilder RegisterViews(this MauiAppBuilder builder)
+    private static MauiAppBuilder RegisterViews(this MauiAppBuilder builder)
     {
         var s = builder.Services;
 
 
         s.RegisterForNavigation<MainPage, MainViewModel>();
         s.RegisterForNavigation<ScanPage, ScanViewModel>("BleScan");
-        s.RegisterForNavigation<PeripheralPage, PeripheralViewModel>("BlePeripheral");
-        s.RegisterForNavigation<ServicePage, ServiceViewModel>("BlePeripheralService");
-        s.RegisterForNavigation<CharacteristicPage, CharacteristicViewModel>("BlePeripheralCharacteristic");
-        s.RegisterForNavigation<ConnectionPage, ConnectionViewModel>("Connection");
+        s.RegisterForNavigation<PeripheralPage, PeripheralViewModel>(
+            "BlePeripheral");
+        s.RegisterForNavigation<ServicePage, ServiceViewModel>(
+            "BlePeripheralService");
+        s.RegisterForNavigation<CharacteristicPage, CharacteristicViewModel>(
+            "BlePeripheralCharacteristic");
+        s.RegisterForNavigation<ConnectionPage, ConnectionViewModel>(
+            "Connection");
         s.RegisterForNavigation<SensorsPage, SensorsViewModel>("Sensors");
         return builder;
     }
 }
-
