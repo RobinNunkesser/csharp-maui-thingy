@@ -6,6 +6,17 @@
              x:DataType="local:SensorsViewModel"
              x:Class="Thingy.SensorsPage">
     <ContentPage.Content>
-        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Text="Battery Level" />
+            <Label Grid.Row="0" Grid.Column="1" Text="{Binding BatteryLevel}" />
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

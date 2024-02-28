@@ -1,5 +1,6 @@
 /// https://nordicsemiconductor.github.io/Nordic-Thingy52-FW/documentation/firmware_architecture.html#fw_arch_ble_services
 
+using System.Diagnostics;
 using Shiny.BluetoothLE;
 
 namespace Thingy;
@@ -42,7 +43,7 @@ public class SensorsViewModel : ViewModel
     private async Task<List<BleCharacteristicInfo>> GetCharacteristics(
         string uuid)
     {
-        return (await peripheral!.GetCharacteristicsAsync(uuid)).ToList();
+        return (await peripheral!.GetCharacteristics(uuid)).ToList();
     }
 
     private async Task<List<BleDescriptorInfo>> GetDescriptors(
@@ -68,22 +69,16 @@ public class SensorsViewModel : ViewModel
         var characteristics =
             await GetCharacteristics(ThingyUUIDs.BatteryUuid);
         foreach (var characteristic in characteristics)
-        {
             if (characteristic.CanRead())
             {
                 var result =
                     await peripheral!.ReadCharacteristicAsync(characteristic);
-                if (result.Data != null) BatteryLevel = result.Data[0];
+                if (result.Data != null)
+                {
+                    BatteryLevel = result.Data[0];
+                    Debug.WriteLine($"Battery level read as {BatteryLevel}");
+                }
             }
-
-            if (characteristic.CanNotify())
-                peripheral
-                    .NotifyCharacteristic(characteristic)
-                    .SubOnMainThread(result =>
-                    {
-                        if (result.Data != null) BatteryLevel = result.Data[0];
-                    });
-        }
     }
 
     public override void OnNavigatedTo(INavigationParameters parameters)
