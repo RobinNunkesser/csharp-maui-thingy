@@ -8,7 +8,8 @@ public static class MauiProgram
         .UseMauiCommunityToolkit()
         .UseShinyFramework(
             new DryIocContainerExtension(),
-            prism => prism.OnAppStart("NavigationPage/Connection"),
+            prism => prism.OnAppStart("NavigationPage/MainPage"),
+            //prism => prism.OnAppStart("NavigationPage/Connection"),
             //prism => prism.OnAppStart("NavigationPage/BleScan"),
             new GlobalExceptionHandlerConfig(
 #if DEBUG
