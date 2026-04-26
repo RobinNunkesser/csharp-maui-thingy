@@ -2,32 +2,35 @@
 
 public static class MauiProgram
 {
-    public static MauiApp CreateMauiApp() => MauiApp
-        .CreateBuilder()
-        .UseMauiApp<App>()
-        .UseMauiCommunityToolkit()
-        .UseShinyFramework(
-            new DryIocContainerExtension(),
-            prism => prism.OnAppStart("NavigationPage/MainPage"),
-            //prism => prism.OnAppStart("NavigationPage/Connection"),
-            //prism => prism.OnAppStart("NavigationPage/BleScan"),
-            new GlobalExceptionHandlerConfig(
+    public static MauiApp CreateMauiApp()
+    {
+        return MauiApp
+            .CreateBuilder()
+            .UseMauiApp<App>()
+            .UseMauiCommunityToolkit()
+            .UseShinyFramework(
+                new DryIocContainerExtension(),
+                prism => prism.OnAppStart("NavigationPage/MainPage"),
+                //prism => prism.OnAppStart("NavigationPage/Connection"),
+                //prism => prism.OnAppStart("NavigationPage/BleScan"),
+                new GlobalExceptionHandlerConfig(
 #if DEBUG
-                ErrorAlertType.FullError
+                    ErrorAlertType.FullError
 #else
                 ErrorAlertType.NoLocalize
 #endif
+                )
             )
-        )
-        .ConfigureFonts(fonts =>
-        {
-            fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-            fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-        })
-        .RegisterInfrastructure()
-        .RegisterAppServices()
-        .RegisterViews()
-        .Build();
+            .ConfigureFonts(fonts =>
+            {
+                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+            })
+            .RegisterInfrastructure()
+            .RegisterAppServices()
+            .RegisterViews()
+            .Build();
+    }
 
 
     private static MauiAppBuilder RegisterAppServices(

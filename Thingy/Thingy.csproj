@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>$(TargetFrameworks);net8.0-ios</TargetFrameworks>
-        <TargetFrameworks>$(TargetFrameworks);net8.0-android</TargetFrameworks>
-        <TargetFrameworks>$(TargetFrameworks);net8.0-maccatalyst</TargetFrameworks>
-        <MauiVersion>8.0.6</MauiVersion>
+        <TargetFrameworks>$(TargetFrameworks);net10.0-ios</TargetFrameworks>
+        <TargetFrameworks>$(TargetFrameworks);net10.0-android</TargetFrameworks>
+        <TargetFrameworks>$(TargetFrameworks);net10.0-maccatalyst</TargetFrameworks>
+        <MauiVersion>10.0.41</MauiVersion>
         <OutputType>Exe</OutputType>
         <RootNamespace>Thingy</RootNamespace>
         <SingleProject>true</SingleProject>
@@ -18,13 +18,13 @@
         <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
         <ApplicationVersion>1</ApplicationVersion>
 
-        <ShinyVersion>3.2.4</ShinyVersion>
+        <ShinyVersion>3.3.3</ShinyVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
         <DefineConstants>$(DefineConstants);PLATFORM</DefineConstants>
         <SupportedOSPlatformVersion>26.0</SupportedOSPlatformVersion>
-        <TargetPlatformVersion>34</TargetPlatformVersion>
+        <TargetPlatformVersion>35</TargetPlatformVersion>
         <!--
         <AndroidLinkTool>r8</AndroidLinkTool>
         <AndroidLinkTool>proguard</AndroidLinkTool>
@@ -38,22 +38,15 @@
 
 
     <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">
-        <SupportedOSPlatformVersion>14.0</SupportedOSPlatformVersion>
+        <SupportedOSPlatformVersion>15.0</SupportedOSPlatformVersion>
         <DefineConstants>$(DefineConstants);APPLE;PLATFORM</DefineConstants>
 
         <UseHardenedRuntime Condition="'$(Configuration)' == 'Release'">true</UseHardenedRuntime>
         <RuntimeIdentifiers Condition="'$(Configuration)' == 'Debug'">maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers>
+        <!-- MacCatalyst workaround: statischer Registrar verhindert Laufzeitfehler mit Shiny/BLE -->
+        <MtouchExtraArgs>--registrar:static</MtouchExtraArgs>
     </PropertyGroup>
 
-    <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">
-        <CustomEntitlements Include="com.apple.security.app-sandbox" Type="boolean" Value="true"/>
-        <CustomEntitlements Include="com.apple.security.get-task-allow" Type="boolean" Value="true"/>
-        <CustomEntitlements Include="com.apple.security.network.client" Type="boolean" Value="true"/>
-    </ItemGroup>
-
-    <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios' OR $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">
-        <CustomEntitlements Include="keychain-access-groups" Type="StringArray" Value="$(AppIdentifierPrefix)de.hshl.isd.thingy"/>
-    </ItemGroup>
 
     <ItemGroup>
         <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4"/>
@@ -70,15 +63,15 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)"/>
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)"/>
-        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" Condition="'$(Configuration)' == 'Debug'"/>
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.1" Condition="'$(Configuration)' == 'Debug'"/>
 
-        <PackageReference Include="CommunityToolkit.Maui" Version="7.0.1"/>
-        <PackageReference Include="Prism.DryIoc.Maui" Version="9.0.271-pre"/>
+        <PackageReference Include="CommunityToolkit.Maui" Version="14.1.0"/>
+        <PackageReference Include="Prism.DryIoc.Maui" Version="9.0.537"/>
         <PackageReference Include="ReactiveUI.Fody" Version="19.5.31"/>
-        <PackageReference Include="Shiny.BluetoothLE" Version="3.2.4" />
-        <PackageReference Include="Shiny.Framework" Version="4.0.0"/>
+        <PackageReference Include="Shiny.BluetoothLE" Version="$(ShinyVersion)"/>
+        <PackageReference Include="Shiny.Framework" Version="4.1.0"/>
         <PackageReference Include="Shiny.Extensions.Configuration" Version="$(ShinyVersion)"/>
-        <PackageReference Include="Shiny.Hosting.Maui" Version="3.2.4"/>
+        <PackageReference Include="Shiny.Hosting.Maui" Version="$(ShinyVersion)"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -114,5 +107,5 @@
             <SubType>Code</SubType>
         </Compile>
     </ItemGroup>
-    
+
 </Project>
